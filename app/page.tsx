@@ -20,6 +20,7 @@ import {
   RiskApyRadar,
   BalanceDistributionChart,
 } from "@/components/charts";
+import { AgentPanel } from "@/components/agent-panel";
 
 export default function Dashboard() {
   const { vault } = useVault();
@@ -48,6 +49,11 @@ export default function Dashboard() {
           <UserBalanceMetric />
           <ApyMetric />
           <RiskMetric />
+
+          {/* AI Agent — prominent placement */}
+          <div className="col-span-2 lg:col-span-4">
+            <AgentPanel />
+          </div>
 
           {/* Charts — full width on mobile, 2col on desktop */}
           <div className="col-span-2">

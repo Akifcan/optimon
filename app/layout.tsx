@@ -4,6 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { VaultProvider } from "@/lib/vault-context";
 import { WalletProvider } from "@/lib/wallet-context";
+import { AgentProvider } from "@/lib/agent-context";
 import "./globals.css";
 
 const inter = Inter({
@@ -34,9 +35,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <WalletProvider>
           <VaultProvider>
-            <Header />
-            <main className="flex-1 flex flex-col">{children}</main>
-            <Footer />
+            <AgentProvider>
+              <Header />
+              <main className="flex-1 flex flex-col">{children}</main>
+              <Footer />
+            </AgentProvider>
           </VaultProvider>
         </WalletProvider>
       </body>
