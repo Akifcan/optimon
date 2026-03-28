@@ -23,27 +23,33 @@ export default function ConnectPage() {
       <section className="flex flex-col items-center justify-center gap-6 px-4 pt-20 pb-16 text-center">
         <div className="flex items-center gap-3">
           <Image
-            src="/logomark.png"
-            alt="Monad"
-            width={48}
-            height={48}
+            src="/logo.png"
+            alt="Optimon"
+            width={150}
+            height={150}
+            className="rounded-xl"
           />
-          <span className="text-3xl font-bold tracking-tight">OptiMon</span>
+          <span className="text-3xl font-bold tracking-tight">Optimon</span>
         </div>
         <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-          Your money works harder,<br />you do nothing.
+          Your money works harder,
+          <br />
+          you do nothing.
         </h1>
         <p className="max-w-lg text-lg text-muted-foreground">
           OptiMon is a vault that automatically grows your crypto across
           multiple strategies. Just deposit and watch your balance grow.
         </p>
         <div className="flex flex-col items-center gap-3 pt-2">
-          <Button size="lg" className="px-8 text-base" onClick={connect} disabled={isConnecting}>
+          <Button
+            size="lg"
+            className="px-8 text-base"
+            onClick={connect}
+            disabled={isConnecting}
+          >
             {isConnecting ? "Connecting..." : "Connect Wallet"}
           </Button>
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
+          {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
         <div className="flex items-center gap-2 pt-4 text-sm text-muted-foreground">
           <span>Powered by</span>
@@ -59,19 +65,21 @@ export default function ConnectPage() {
 
       {/* Interactive flow */}
       <section className="mx-auto w-full max-w-4xl px-4 py-16">
-        <h2 className="mb-10 text-center text-2xl font-bold">See how it works</h2>
+        <h2 className="mb-10 text-center text-2xl font-bold">
+          See how it works
+        </h2>
         <VaultFlow />
       </section>
 
       {/* Comparison */}
       <section className="mx-auto w-full max-w-2xl px-4 py-16">
-        <h2 className="mb-8 text-center text-2xl font-bold">
-          Bank vs OptiMon
-        </h2>
+        <h2 className="mb-8 text-center text-2xl font-bold">Bank vs Optimon</h2>
         <div className="grid grid-cols-3 gap-4 text-sm">
           <div />
-          <div className="text-center font-medium text-muted-foreground">Bank</div>
-          <div className="text-center font-medium text-primary">OptiMon</div>
+          <div className="text-center font-medium text-muted-foreground">
+            Bank
+          </div>
+          <div className="text-center font-medium text-primary">Optimon</div>
 
           <div className="text-muted-foreground">Annual return</div>
           <div className="text-center">~1-2%</div>
@@ -98,16 +106,22 @@ export default function ConnectPage() {
       {/* CTA */}
       <section className="flex flex-col items-center gap-6 px-4 py-16 text-center">
         <Image
-          src="/logomark.png"
+          src="/logo.png"
           alt="OptiMon"
           width={56}
           height={56}
+          className="rounded-xl"
         />
         <h2 className="text-2xl font-bold">Ready to start earning?</h2>
         <p className="max-w-md text-muted-foreground">
           Connect your MetaMask wallet to access the OptiMon vault dashboard.
         </p>
-        <Button size="lg" className="px-8 text-base" onClick={connect} disabled={isConnecting}>
+        <Button
+          size="lg"
+          className="px-8 text-base"
+          onClick={connect}
+          disabled={isConnecting}
+        >
           {isConnecting ? "Connecting..." : "Connect Wallet"}
         </Button>
         <p className="text-xs text-muted-foreground">

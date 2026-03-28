@@ -12,8 +12,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "OptiMon Dashboard",
-  description: "Vault optimizer monitor - track performance and strategy allocations",
+  title: "Optimon Dashboard",
+  description:
+    "Vault optimizer monitor - track performance and strategy allocations",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

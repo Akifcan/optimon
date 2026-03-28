@@ -1,7 +1,13 @@
 "use client";
 
 import { useVault } from "@/lib/vault-context";
-import { VaultCard } from "@/components/vault-card";
+import {
+  TotalVaultMetric,
+  UserBalanceMetric,
+  ApyMetric,
+  RiskMetric,
+  EarningsCard,
+} from "@/components/vault-card";
 import { StrategyCard } from "@/components/strategy-card";
 import { RebalanceAnimation } from "@/components/rebalance-animation";
 import { DepositModal } from "@/components/deposit-modal";
@@ -20,8 +26,9 @@ export default function Dashboard() {
 
   return (
     <AuthGuard>
-      <div className="mx-auto w-full max-w-5xl space-y-8 px-4 py-8">
-        <div className="flex items-center justify-between">
+      <div className="mx-auto w-full max-w-6xl px-4 py-8">
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-sm text-muted-foreground">
@@ -34,30 +41,48 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <VaultCard />
+        {/* Bento Grid */}
+        <div className="grid grid-cols-4 gap-4">
+          {/* Row 1: 4 metric cards */}
+          <TotalVaultMetric />
+          <UserBalanceMetric />
+          <ApyMetric />
+          <RiskMetric />
 
-        <RebalanceAnimation />
-
-        <div>
-          <h2 className="mb-4 text-lg font-semibold">Analytics</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
+          {/* Row 2: Allocation (2col) + APY Chart (2col) */}
+          <div className="col-span-2">
             <AllocationChart />
+          </div>
+          <div className="col-span-2">
             <ApyComparisonChart />
-            <RiskApyRadar />
-            <BalanceDistributionChart />
+          </div>
+
+          {/* Row 3: Earnings (2col) + Rebalance bar (2col) */}
+          <div className="col-span-2">
+            <EarningsCard />
+          </div>
+          <div className="col-span-2 flex items-center">
+            <div className="w-full rounded-xl border border-border bg-card p-5">
+              <RebalanceAnimation />
+            </div>
+          </div>
+
+          {/* Row 4: 3 Strategy cards spanning differently */}
+          <div className="col-span-4">
+            <div className="grid grid-cols-3 gap-4">
+              {vault.strategies.map((strategy) => (
+                <StrategyCard key={strategy.name} strategy={strategy} />
+              ))}
+            </div>
+          </div>
+
+          {/* Row 5: Radar (1col) + Balance (1col) + Activity (2col) */}
+          <RiskApyRadar />
+          <BalanceDistributionChart />
+          <div className="col-span-2">
+            <TransactionHistory />
           </div>
         </div>
-
-        <div>
-          <h2 className="mb-4 text-lg font-semibold">Strategies</h2>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {vault.strategies.map((strategy) => (
-              <StrategyCard key={strategy.name} strategy={strategy} />
-            ))}
-          </div>
-        </div>
-
-        <TransactionHistory />
       </div>
     </AuthGuard>
   );

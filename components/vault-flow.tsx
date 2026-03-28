@@ -67,7 +67,7 @@ export function VaultFlow() {
   }, [cycle]);
 
   const phaseLabels: Record<Phase, string> = {
-    idle: "Watch how OptiMon works",
+    idle: "Watch how Optimon works",
     deposit: "You deposit $1,000",
     split: "Vault splits across strategies",
     earn: "Each strategy earns yield",
@@ -93,9 +93,21 @@ export function VaultFlow() {
           }`}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <rect x="2" y="5" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
+            <rect
+              x="2"
+              y="5"
+              width="16"
+              height="12"
+              rx="2"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
             <path d="M14 11a1 1 0 100-2 1 1 0 000 2z" fill="currentColor" />
-            <path d="M5 5V4a2 2 0 012-2h6a2 2 0 012 2v1" stroke="currentColor" strokeWidth="1.5" />
+            <path
+              d="M5 5V4a2 2 0 012-2h6a2 2 0 012 2v1"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
           </svg>
           <span className="text-sm font-semibold tabular-nums">
             ${balance > 0 ? balance.toLocaleString() : "---"}
@@ -121,13 +133,18 @@ export function VaultFlow() {
             phase === "split"
               ? "border-primary bg-primary/10 scale-105"
               : phase === "rebalance"
-                ? "border-[#FFAE45] bg-[#FFAE45]/10 scale-105"
-                : "border-border bg-card"
+              ? "border-[#FFAE45] bg-[#FFAE45]/10 scale-105"
+              : "border-border bg-card"
           }`}
         >
           <p className="text-xs text-muted-foreground">OptiMon Vault</p>
           <p className="font-bold tabular-nums">
-            ${phase === "rebalance" ? "1,107" : balance > 0 ? balance.toLocaleString() : "---"}
+            $
+            {phase === "rebalance"
+              ? "1,107"
+              : balance > 0
+              ? balance.toLocaleString()
+              : "---"}
           </p>
         </div>
       </div>
@@ -150,9 +167,7 @@ export function VaultFlow() {
           <div
             key={strategy.name}
             className={`rounded-xl border-2 p-4 text-center transition-all duration-700 ${
-              allocations[i] > 0
-                ? "border-current scale-105"
-                : "border-border"
+              allocations[i] > 0 ? "border-current scale-105" : "border-border"
             }`}
             style={{
               borderColor: allocations[i] > 0 ? strategy.color : undefined,
@@ -168,9 +183,7 @@ export function VaultFlow() {
             <p className="text-lg font-bold tabular-nums">
               {allocations[i] > 0 ? `$${allocations[i]}` : "---"}
             </p>
-            <p className="text-xs text-muted-foreground">
-              {strategy.apy}% APY
-            </p>
+            <p className="text-xs text-muted-foreground">{strategy.apy}% APY</p>
             {earned[i] > 0 && (
               <p
                 className="mt-1 text-xs font-semibold animate-in fade-in slide-in-from-bottom-1 duration-500"
@@ -186,7 +199,9 @@ export function VaultFlow() {
       {/* Result */}
       <div
         className={`rounded-xl border-2 border-green-500/30 bg-green-500/5 p-5 transition-all duration-700 ${
-          phase === "rebalance" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          phase === "rebalance"
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4"
         }`}
       >
         <p className="mb-3 text-center text-sm font-semibold text-green-500">

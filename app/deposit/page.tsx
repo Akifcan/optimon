@@ -14,7 +14,7 @@ export default function DepositPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Deposit</h1>
           <p className="text-sm text-muted-foreground">
-            Add funds to the OptiMon vault
+            Add funds to the Optimon vault
           </p>
         </div>
 
