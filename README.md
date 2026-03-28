@@ -19,9 +19,9 @@
 
 ## What is Optimon?
 
-Optimon is an AI-powered vault that automatically distributes and optimizes your crypto across multiple yield strategies. Just deposit and let **Hoot** our AI agent handle the rest.
+Optimon is an AI-powered vault on Monad that automatically distributes your crypto across yield strategies. Our AI agent **Hoot** continuously monitors performance and rebalances your portfolio in real-time to maximize returns, like a smart savings account that optimizes itself.
 
-No complex dashboards to monitor. No manual rebalancing. No DeFi expertise needed.
+Just deposit and let Hoot handle the rest. No manual rebalancing. No DeFi expertise needed.
 
 ## Why should you use it?
 
