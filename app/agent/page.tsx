@@ -5,6 +5,13 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { AuthGuard } from "@/components/auth-guard";
 import { useAgentStore, type RiskTolerance } from "@/lib/agent-store";
 import { useVault } from "@/lib/vault-context";
@@ -37,6 +44,7 @@ export default function AgentPage() {
   const {
     status,
     lastAnalysis,
+    lastRebalanceResult,
     rebalanceHistory,
     chatMessages,
     riskTolerance,
@@ -44,6 +52,7 @@ export default function AgentPage() {
     error,
     setRiskTolerance,
     setAutopilot,
+    clearRebalanceResult,
     analyze,
     executeRebalance,
     sendChat,
@@ -446,6 +455,77 @@ export default function AgentPage() {
           </div>
         </div>
       </div>
+      {/* Success Dialog */}
+      <Dialog
+        open={!!lastRebalanceResult}
+        onOpenChange={(open) => { if (!open) clearRebalanceResult(); }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Image
+                src="/logo.png"
+                alt="Hoot"
+                width={32}
+                height={32}
+                className="rounded-lg"
+              />
+              Rebalance Complete!
+            </DialogTitle>
+            <DialogDescription>
+              Hoot has successfully optimized your vault.
+            </DialogDescription>
+          </DialogHeader>
+          {lastRebalanceResult && (
+            <div className="space-y-4 py-2">
+              <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-4">
+                <p className="mb-3 text-center text-sm font-medium text-green-500">
+                  Vault rebalanced successfully
+                </p>
+                <div className="space-y-1.5">
+                  {lastRebalanceResult.strategies.map((s) => (
+                    <div key={s.name} className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">{s.name}</span>
+                      <span className="font-medium tabular-nums">{s.weight}%</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Transaction</span>
+                  <a
+                    href={`https://testnet.monadexplorer.com/tx/${lastRebalanceResult.txHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-xs text-primary hover:underline"
+                  >
+                    {truncateHash(lastRebalanceResult.txHash)}
+                  </a>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Time</span>
+                  <span className="text-xs">
+                    {lastRebalanceResult.timestamp.toLocaleTimeString()}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-center text-xs text-muted-foreground">
+                Your funds have been redistributed across strategies for optimal returns. Hoot will keep monitoring and suggest further optimizations.
+              </p>
+
+              <Button
+                className="w-full"
+                onClick={clearRebalanceResult}
+              >
+                Done
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </AuthGuard>
   );
 }

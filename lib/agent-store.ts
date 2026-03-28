@@ -44,9 +44,16 @@ export interface ChatMessage {
 
 export type RiskTolerance = "conservative" | "balanced" | "aggressive";
 
+export interface RebalanceResult {
+  strategies: { name: string; weight: number }[];
+  txHash: string;
+  timestamp: Date;
+}
+
 interface AgentState {
   status: "idle" | "analyzing" | "executing" | "chatting";
   lastAnalysis: AgentAnalysis | null;
+  lastRebalanceResult: RebalanceResult | null;
   rebalanceHistory: RebalanceEntry[];
   chatMessages: ChatMessage[];
   riskTolerance: RiskTolerance;
@@ -55,6 +62,7 @@ interface AgentState {
 
   setRiskTolerance: (r: RiskTolerance) => void;
   setAutopilot: (v: boolean) => void;
+  clearRebalanceResult: () => void;
   analyze: () => Promise<void>;
   executeRebalance: (onSuccess?: () => Promise<void>) => Promise<void>;
   sendChat: (message: string) => Promise<void>;
@@ -63,6 +71,7 @@ interface AgentState {
 export const useAgentStore = create<AgentState>((set, get) => ({
   status: "idle",
   lastAnalysis: null,
+  lastRebalanceResult: null,
   rebalanceHistory: [],
   chatMessages: [],
   riskTolerance: "balanced",
@@ -71,6 +80,7 @@ export const useAgentStore = create<AgentState>((set, get) => ({
 
   setRiskTolerance: (r) => set({ riskTolerance: r }),
   setAutopilot: (v) => set({ autopilot: v }),
+  clearRebalanceResult: () => set({ lastRebalanceResult: null }),
 
   analyze: async () => {
     set({ status: "analyzing", error: null });
@@ -130,6 +140,14 @@ export const useAgentStore = create<AgentState>((set, get) => ({
           },
           ...state.rebalanceHistory.slice(0, 19),
         ],
+        lastRebalanceResult: {
+          strategies: lastAnalysis.strategies.map((s, i) => ({
+            name: s.name,
+            weight: weights[i],
+          })),
+          txHash: data.rebalanceTxHash,
+          timestamp: new Date(data.timestamp),
+        },
         lastAnalysis: null,
         status: "idle",
       }));
