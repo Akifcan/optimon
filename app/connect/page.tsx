@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { useWallet } from "@/lib/wallet-context";
+import { VaultFlow } from "@/components/vault-flow";
 
 export default function ConnectPage() {
   const { address, isConnecting, error, connect } = useWallet();
@@ -57,46 +57,10 @@ export default function ConnectPage() {
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Interactive flow */}
       <section className="mx-auto w-full max-w-4xl px-4 py-16">
-        <h2 className="mb-8 text-center text-2xl font-bold">How it works</h2>
-        <div className="grid gap-6 sm:grid-cols-3">
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
-                1
-              </div>
-              <h3 className="mb-2 font-semibold">Deposit</h3>
-              <p className="text-sm text-muted-foreground">
-                Connect your wallet and deposit funds into the vault. That&apos;s it.
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
-                2
-              </div>
-              <h3 className="mb-2 font-semibold">Vault allocates</h3>
-              <p className="text-sm text-muted-foreground">
-                Your funds are split across lending, liquidity pools, and
-                staking — automatically.
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-6 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
-                3
-              </div>
-              <h3 className="mb-2 font-semibold">You earn</h3>
-              <p className="text-sm text-muted-foreground">
-                The vault rebalances to maximize returns. You just sit back and
-                watch your balance grow.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+        <h2 className="mb-10 text-center text-2xl font-bold">See how it works</h2>
+        <VaultFlow />
       </section>
 
       {/* Comparison */}
