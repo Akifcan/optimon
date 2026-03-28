@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.png" alt="OptiMon" width="120" />
+  <img src="public/logo.png" alt="Optimon" width="120" />
 </p>
 
 <h1 align="center">Optimon</h1>
@@ -17,7 +17,7 @@
 
 ---
 
-## What is OptiMon?
+## What is Optimon?
 
 Optimon is an AI-powered vault that automatically distributes and optimizes your crypto across multiple yield strategies. Just deposit and let **Hoot** our AI agent handle the rest.
 
@@ -36,7 +36,7 @@ No complex dashboards to monitor. No manual rebalancing. No DeFi expertise neede
 ```
 You deposit MON
     |
-OptiMon Vault splits it across strategies
+Optimon Vault splits it across strategies
     |
 Lending (earn interest) + LP Pool (earn trading fees) + Staking (earn rewards)
     |
