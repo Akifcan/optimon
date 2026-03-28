@@ -26,12 +26,12 @@ export default function Dashboard() {
 
   return (
     <AuthGuard>
-      <div className="mx-auto w-full max-w-6xl px-4 py-8">
+      <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:py-8">
         {/* Header */}
-        <div className="mb-6 flex items-center justify-between">
+        <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-            <p className="text-sm text-muted-foreground">
+            <h1 className="text-xl font-bold tracking-tight sm:text-2xl">Dashboard</h1>
+            <p className="text-xs text-muted-foreground sm:text-sm">
               Monitor your vault performance and strategy allocations
             </p>
           </div>
@@ -42,14 +42,14 @@ export default function Dashboard() {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-4 gap-4">
-          {/* Row 1: 4 metric cards */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {/* Row 1: 4 metric cards — 2x2 on mobile, 4 on desktop */}
           <TotalVaultMetric />
           <UserBalanceMetric />
           <ApyMetric />
           <RiskMetric />
 
-          {/* Row 2: Allocation (2col) + APY Chart (2col) */}
+          {/* Charts — full width on mobile, 2col on desktop */}
           <div className="col-span-2">
             <AllocationChart />
           </div>
@@ -57,28 +57,32 @@ export default function Dashboard() {
             <ApyComparisonChart />
           </div>
 
-          {/* Row 3: Earnings (2col) + Rebalance bar (2col) */}
+          {/* Earnings + Rebalance */}
           <div className="col-span-2">
             <EarningsCard />
           </div>
           <div className="col-span-2 flex items-center">
-            <div className="w-full rounded-xl border border-border bg-card p-5">
+            <div className="w-full rounded-xl border border-border bg-card p-4 sm:p-5">
               <RebalanceAnimation />
             </div>
           </div>
 
-          {/* Row 4: 3 Strategy cards spanning differently */}
-          <div className="col-span-4">
-            <div className="grid grid-cols-3 gap-4">
+          {/* Strategy cards — stacked on mobile, 3col on desktop */}
+          <div className="col-span-2 lg:col-span-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
               {vault.strategies.map((strategy) => (
                 <StrategyCard key={strategy.name} strategy={strategy} />
               ))}
             </div>
           </div>
 
-          {/* Row 5: Radar (1col) + Balance (1col) + Activity (2col) */}
-          <RiskApyRadar />
-          <BalanceDistributionChart />
+          {/* Bottom row — stacked on mobile, mixed on desktop */}
+          <div className="col-span-2 lg:col-span-1">
+            <RiskApyRadar />
+          </div>
+          <div className="col-span-2 lg:col-span-1">
+            <BalanceDistributionChart />
+          </div>
           <div className="col-span-2">
             <TransactionHistory />
           </div>

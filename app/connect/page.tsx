@@ -29,7 +29,9 @@ export default function ConnectPage() {
             height={64}
             className="h-12 w-12 rounded-xl sm:h-16 sm:w-16"
           />
-          <span className="text-2xl font-bold tracking-tight sm:text-3xl">Optimon</span>
+          <span className="text-2xl font-bold tracking-tight sm:text-3xl">
+            Optimon
+          </span>
         </div>
         <h1 className="max-w-2xl text-2xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
           Your money works harder,
@@ -78,7 +80,9 @@ export default function ConnectPage() {
         </h2>
         <div className="grid grid-cols-3 gap-x-3 gap-y-3 text-xs sm:gap-4 sm:text-sm">
           <div />
-          <div className="text-center font-medium text-muted-foreground">Bank</div>
+          <div className="text-center font-medium text-muted-foreground">
+            Bank
+          </div>
           <div className="text-center font-medium text-primary">Optimon</div>
 
           <div className="text-muted-foreground">Annual return</div>
@@ -112,7 +116,9 @@ export default function ConnectPage() {
           height={56}
           className="h-10 w-10 rounded-xl sm:h-14 sm:w-14"
         />
-        <h2 className="text-xl font-bold sm:text-2xl">Ready to start earning?</h2>
+        <h2 className="text-xl font-bold sm:text-2xl">
+          Ready to start earning?
+        </h2>
         <p className="max-w-md text-sm text-muted-foreground sm:text-base">
           Connect your MetaMask wallet to access the OptiMon vault dashboard.
         </p>
