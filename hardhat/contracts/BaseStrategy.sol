@@ -23,10 +23,12 @@ abstract contract BaseStrategy is IStrategy {
     }
 
     function withdraw(uint256 amount) external override onlyVault {
-        require(amount <= address(this).balance, "insufficient balance");
-        principal = principal > amount ? principal - amount : 0;
-        (bool ok, ) = vault.call{value: amount}("");
-        require(ok, "transfer failed");
+        uint256 actual = amount > address(this).balance ? address(this).balance : amount;
+        principal = principal > actual ? principal - actual : 0;
+        if (actual > 0) {
+            (bool ok, ) = vault.call{value: actual}("");
+            require(ok, "transfer failed");
+        }
     }
 
     function harvest() external override onlyVault {
