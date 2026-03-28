@@ -35,6 +35,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   // Check if already connected on mount
   useEffect(() => {
+    // If user manually disconnected, don't auto-reconnect
+    if (sessionStorage.getItem("wallet-disconnected") === "true") return;
+
     const ethereum = (window as unknown as { ethereum?: { request: (args: { method: string }) => Promise<string[]>; on: (event: string, handler: (...args: unknown[]) => void) => void } }).ethereum;
     if (!ethereum) return;
 
@@ -53,6 +56,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       if (accounts.length === 0) {
         setAddress(null);
       } else {
+        sessionStorage.removeItem("wallet-disconnected");
         setAddress(accounts[0]);
       }
     }));
@@ -73,6 +77,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         method: "eth_requestAccounts",
       });
       if (accounts.length > 0) {
+        sessionStorage.removeItem("wallet-disconnected");
         setAddress(accounts[0]);
       }
     } catch (err: unknown) {
@@ -84,6 +89,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const disconnect = useCallback(() => {
+    sessionStorage.setItem("wallet-disconnected", "true");
     setAddress(null);
   }, []);
 
