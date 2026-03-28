@@ -8,6 +8,12 @@ import { DepositModal } from "@/components/deposit-modal";
 import { WithdrawButton } from "@/components/withdraw-button";
 import { TransactionHistory } from "@/components/transaction-history";
 import { AuthGuard } from "@/components/auth-guard";
+import {
+  AllocationChart,
+  ApyComparisonChart,
+  RiskApyRadar,
+  BalanceDistributionChart,
+} from "@/components/charts";
 
 export default function Dashboard() {
   const { vault } = useVault();
@@ -31,6 +37,16 @@ export default function Dashboard() {
         <VaultCard />
 
         <RebalanceAnimation />
+
+        <div>
+          <h2 className="mb-4 text-lg font-semibold">Analytics</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <AllocationChart />
+            <ApyComparisonChart />
+            <RiskApyRadar />
+            <BalanceDistributionChart />
+          </div>
+        </div>
 
         <div>
           <h2 className="mb-4 text-lg font-semibold">Strategies</h2>
