@@ -20,23 +20,23 @@ export default function ConnectPage() {
   return (
     <div className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="flex flex-col items-center justify-center gap-6 px-4 pt-20 pb-16 text-center">
+      <section className="flex flex-col items-center justify-center gap-4 px-4 pt-12 pb-10 text-center sm:gap-6 sm:pt-20 sm:pb-16">
         <div className="flex items-center gap-3">
           <Image
             src="/logo.png"
             alt="Optimon"
-            width={150}
-            height={150}
-            className="rounded-xl"
+            width={64}
+            height={64}
+            className="h-12 w-12 rounded-xl sm:h-16 sm:w-16"
           />
-          <span className="text-3xl font-bold tracking-tight">Optimon</span>
+          <span className="text-2xl font-bold tracking-tight sm:text-3xl">Optimon</span>
         </div>
-        <h1 className="max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+        <h1 className="max-w-2xl text-2xl font-bold leading-tight tracking-tight sm:text-4xl md:text-5xl">
           Your money works harder,
           <br />
           you do nothing.
         </h1>
-        <p className="max-w-lg text-lg text-muted-foreground">
+        <p className="max-w-lg text-sm text-muted-foreground sm:text-lg">
           OptiMon is a vault that automatically grows your crypto across
           multiple strategies. Just deposit and watch your balance grow.
         </p>
@@ -51,34 +51,34 @@ export default function ConnectPage() {
           </Button>
           {error && <p className="text-sm text-destructive">{error}</p>}
         </div>
-        <div className="flex items-center gap-2 pt-4 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 pt-4 text-xs text-muted-foreground sm:text-sm">
           <span>Powered by</span>
           <Image
             src="/monad.png"
             alt="Monad"
             width={100}
             height={24}
-            className="opacity-70"
+            className="h-5 w-auto opacity-70 sm:h-6"
           />
         </div>
       </section>
 
       {/* Interactive flow */}
-      <section className="mx-auto w-full max-w-4xl px-4 py-16">
-        <h2 className="mb-10 text-center text-2xl font-bold">
+      <section className="mx-auto w-full max-w-4xl px-4 py-10 sm:py-16">
+        <h2 className="mb-6 text-center text-xl font-bold sm:mb-10 sm:text-2xl">
           See how it works
         </h2>
         <VaultFlow />
       </section>
 
       {/* Comparison */}
-      <section className="mx-auto w-full max-w-2xl px-4 py-16">
-        <h2 className="mb-8 text-center text-2xl font-bold">Bank vs Optimon</h2>
-        <div className="grid grid-cols-3 gap-4 text-sm">
+      <section className="mx-auto w-full max-w-2xl px-4 py-10 sm:py-16">
+        <h2 className="mb-6 text-center text-xl font-bold sm:mb-8 sm:text-2xl">
+          Bank vs Optimon
+        </h2>
+        <div className="grid grid-cols-3 gap-x-3 gap-y-3 text-xs sm:gap-4 sm:text-sm">
           <div />
-          <div className="text-center font-medium text-muted-foreground">
-            Bank
-          </div>
+          <div className="text-center font-medium text-muted-foreground">Bank</div>
           <div className="text-center font-medium text-primary">Optimon</div>
 
           <div className="text-muted-foreground">Annual return</div>
@@ -104,16 +104,16 @@ export default function ConnectPage() {
       </section>
 
       {/* CTA */}
-      <section className="flex flex-col items-center gap-6 px-4 py-16 text-center">
+      <section className="flex flex-col items-center gap-4 px-4 py-10 text-center sm:gap-6 sm:py-16">
         <Image
           src="/logo.png"
           alt="OptiMon"
           width={56}
           height={56}
-          className="rounded-xl"
+          className="h-10 w-10 rounded-xl sm:h-14 sm:w-14"
         />
-        <h2 className="text-2xl font-bold">Ready to start earning?</h2>
-        <p className="max-w-md text-muted-foreground">
+        <h2 className="text-xl font-bold sm:text-2xl">Ready to start earning?</h2>
+        <p className="max-w-md text-sm text-muted-foreground sm:text-base">
           Connect your MetaMask wallet to access the OptiMon vault dashboard.
         </p>
         <Button

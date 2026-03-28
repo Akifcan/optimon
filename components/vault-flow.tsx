@@ -75,7 +75,7 @@ export function VaultFlow() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-6">
+    <div className="mx-auto w-full max-w-2xl space-y-4 sm:space-y-6">
       {/* Phase label */}
       <div className="text-center">
         <p className="text-sm font-medium text-primary min-h-[20px] transition-all duration-500">
@@ -150,7 +150,7 @@ export function VaultFlow() {
       </div>
 
       {/* Split lines */}
-      <div className="flex justify-center gap-[120px]">
+      <div className="flex justify-center gap-16 sm:gap-[120px]">
         {[0, 1, 2].map((i) => (
           <div
             key={i}
@@ -162,11 +162,11 @@ export function VaultFlow() {
       </div>
 
       {/* Strategy boxes */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {STRATEGIES.map((strategy, i) => (
           <div
             key={strategy.name}
-            className={`rounded-xl border-2 p-4 text-center transition-all duration-700 ${
+            className={`rounded-xl border-2 p-2.5 text-center transition-all duration-700 sm:p-4 ${
               allocations[i] > 0 ? "border-current scale-105" : "border-border"
             }`}
             style={{
@@ -179,11 +179,11 @@ export function VaultFlow() {
               className="mx-auto mb-2 h-2 w-2 rounded-full"
               style={{ backgroundColor: strategy.color }}
             />
-            <p className="text-xs font-medium">{strategy.name}</p>
-            <p className="text-lg font-bold tabular-nums">
+            <p className="text-[10px] font-medium sm:text-xs">{strategy.name}</p>
+            <p className="text-sm font-bold tabular-nums sm:text-lg">
               {allocations[i] > 0 ? `$${allocations[i]}` : "---"}
             </p>
-            <p className="text-xs text-muted-foreground">{strategy.apy}% APY</p>
+            <p className="text-[10px] text-muted-foreground sm:text-xs">{strategy.apy}% APY</p>
             {earned[i] > 0 && (
               <p
                 className="mt-1 text-xs font-semibold animate-in fade-in slide-in-from-bottom-1 duration-500"
@@ -198,7 +198,7 @@ export function VaultFlow() {
 
       {/* Result */}
       <div
-        className={`rounded-xl border-2 border-green-500/30 bg-green-500/5 p-5 transition-all duration-700 ${
+        className={`rounded-xl border-2 border-green-500/30 bg-green-500/5 p-3 transition-all duration-700 sm:p-5 ${
           phase === "rebalance"
             ? "opacity-100 translate-y-0"
             : "opacity-0 translate-y-4"
