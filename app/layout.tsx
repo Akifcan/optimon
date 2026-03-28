@@ -12,12 +12,26 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Optimon Dashboard",
+  title: "Optimon | Your Money Never Sleeps",
   description:
-    "Vault optimizer monitor - track performance and strategy allocations",
+    "AI-powered yield optimizer on Monad. Deposit your crypto and let our AI agent Hoot automatically rebalance your portfolio 24/7 to maximize returns.",
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",
+  },
+  openGraph: {
+    title: "Optimon | Your Money Never Sleeps",
+    description:
+      "AI-powered yield optimizer on Monad. Deposit your crypto and let our AI agent Hoot automatically rebalance your portfolio 24/7 to maximize returns.",
+    images: ["/logo.png"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Optimon | Your Money Never Sleeps",
+    description:
+      "AI-powered yield optimizer on Monad. Deposit your crypto and let our AI agent Hoot automatically rebalance your portfolio 24/7 to maximize returns.",
+    images: ["/logo.png"],
   },
 };
 
