@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useWallet } from "@/lib/wallet-context";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -21,8 +22,17 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (!mounted || !address) {
     return (
-      <div className="flex flex-1 items-center justify-center">
-        <div className="text-sm text-muted-foreground">Loading...</div>
+      <div className="flex flex-1 flex-col items-center justify-center gap-4">
+        <div className="animate-pulse">
+          <Image
+            src="/logo.png"
+            alt="Optimon"
+            width={80}
+            height={80}
+            className="h-16 w-16 rounded-xl sm:h-20 sm:w-20"
+          />
+        </div>
+        <p className="text-xs text-muted-foreground sm:text-sm">Loading...</p>
       </div>
     );
   }

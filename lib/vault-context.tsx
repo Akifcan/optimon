@@ -47,6 +47,7 @@ interface VaultContextValue {
   vault: VaultData;
   transactions: Transaction[];
   isLoading: boolean;
+  isDataLoaded: boolean;
   deposit: (amount: string) => Promise<void>;
   withdraw: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -80,6 +81,7 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
   const [vault, setVault] = useState<VaultData>(EMPTY_VAULT);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   const addTransaction = useCallback(
     (type: Transaction["type"], description: string, amount?: string) => {
@@ -181,8 +183,10 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
             : 0,
         strategies,
       });
+      setIsDataLoaded(true);
     } catch (err) {
       console.error("Failed to read vault:", err);
+      setIsDataLoaded(true);
     }
   }, [address]);
 
@@ -242,7 +246,7 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <VaultContext.Provider
-      value={{ vault, transactions, isLoading, deposit, withdraw, refresh }}
+      value={{ vault, transactions, isLoading, isDataLoaded, deposit, withdraw, refresh }}
     >
       {children}
     </VaultContext.Provider>

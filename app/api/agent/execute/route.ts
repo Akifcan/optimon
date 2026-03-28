@@ -45,12 +45,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Contract expects basis points (sum to 10000)
+    const bpWeights = weights.map((w: number) => w * 100);
+
     const provider = getProvider();
     const wallet = new Wallet(ownerKey, provider);
     const vaultContract = new Contract(ADDRESSES.vault, VAULT_ABI, wallet);
 
     // Set new weights
-    const setTx = await vaultContract.setWeights(weights);
+    const setTx = await vaultContract.setWeights(bpWeights);
     await setTx.wait();
 
     // Rebalance

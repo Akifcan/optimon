@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useVault } from "@/lib/vault-context";
 import {
   TotalVaultMetric,
@@ -23,10 +24,26 @@ import {
 import { AgentPanel } from "@/components/agent-panel";
 
 export default function Dashboard() {
-  const { vault } = useVault();
+  const { vault, isDataLoaded } = useVault();
 
   return (
     <AuthGuard>
+      {!isDataLoaded ? (
+        <div className="flex flex-1 flex-col items-center justify-center gap-4">
+          <div className="animate-pulse">
+            <Image
+              src="/logo.png"
+              alt="Optimon"
+              width={80}
+              height={80}
+              className="h-16 w-16 rounded-xl sm:h-20 sm:w-20"
+            />
+          </div>
+          <p className="text-xs text-muted-foreground sm:text-sm">
+            Loading vault data...
+          </p>
+        </div>
+      ) : (
       <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:py-8">
         {/* Header */}
         <div className="mb-5 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
@@ -94,6 +111,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      )}
     </AuthGuard>
   );
 }

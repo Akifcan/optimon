@@ -72,15 +72,23 @@ export function AgentPanel() {
             </div>
           </div>
           <div className="flex gap-2">
-            <Button
-              size="sm"
-              onClick={analyze}
-              disabled={!isIdle}
-            >
+            <Button size="sm" onClick={analyze} disabled={!isIdle}>
               {status === "analyzing" ? (
                 <span className="flex items-center gap-2">
-                  <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="32" strokeDashoffset="10" />
+                  <svg
+                    className="h-3.5 w-3.5 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeDasharray="32"
+                      strokeDashoffset="10"
+                    />
                   </svg>
                   <span className="hidden sm:inline">Analyzing...</span>
                 </span>
@@ -99,8 +107,20 @@ export function AgentPanel() {
             >
               {status === "executing" ? (
                 <span className="flex items-center gap-2">
-                  <svg className="h-3.5 w-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="32" strokeDashoffset="10" />
+                  <svg
+                    className="h-3.5 w-3.5 animate-spin"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeDasharray="32"
+                      strokeDashoffset="10"
+                    />
                   </svg>
                   <span className="hidden sm:inline">Executing...</span>
                 </span>
@@ -206,8 +226,11 @@ export function AgentPanel() {
         {!lastAnalysis && rebalanceHistory.length === 0 && !error && (
           <div className="rounded-lg border border-dashed border-primary/20 p-4 text-center">
             <p className="text-xs text-muted-foreground sm:text-sm">
-              Click <span className="font-medium text-foreground">&quot;Ask Hoot&quot;</span> to get
-              AI-powered rebalance recommendations.
+              Click{" "}
+              <span className="font-medium text-foreground">
+                &quot;Ask Hoot&quot;
+              </span>{" "}
+              to get AI-powered rebalance recommendations.
             </p>
           </div>
         )}
