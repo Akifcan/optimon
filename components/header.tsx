@@ -52,6 +52,16 @@ export function Header() {
               >
                 Deposit
               </Link>
+              <Link
+                href="/agent"
+                className={`text-sm font-medium transition-colors hover:text-foreground ${
+                  pathname === "/agent"
+                    ? "text-foreground"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Hoot AI
+              </Link>
             </nav>
             <div className="flex items-center gap-3">
               <span className="rounded-full bg-muted px-3 py-1 text-xs font-medium tabular-nums">
@@ -120,6 +130,17 @@ export function Header() {
               }`}
             >
               Deposit
+            </Link>
+            <Link
+              href="/agent"
+              onClick={() => setMenuOpen(false)}
+              className={`text-sm font-medium transition-colors ${
+                pathname === "/agent"
+                  ? "text-foreground"
+                  : "text-muted-foreground"
+              }`}
+            >
+              Hoot AI
             </Link>
           </nav>
           <div className="mt-4 flex items-center justify-between">
