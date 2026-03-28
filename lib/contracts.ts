@@ -26,10 +26,10 @@ export const VAULT_ABI = [
 ] as const;
 
 export const STRATEGY_ABI = [
-  "function totalBalance() external view returns (uint256)",
-  "function apyBps() external pure returns (uint256)",
-  "function riskScore() external pure returns (uint256)",
-  "function principal() external view returns (uint256)",
+  "function totalBalance() view returns (uint256)",
+  "function apyBps() view returns (uint256)",
+  "function riskScore() view returns (uint256)",
+  "function principal() view returns (uint256)",
 ] as const;
 
 export const STRATEGY_META = [

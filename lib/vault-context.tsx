@@ -7,13 +7,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { BrowserProvider, Contract, formatEther, parseEther } from "ethers";
+import { BrowserProvider, JsonRpcProvider, FetchRequest, Contract, formatEther, parseEther } from "ethers";
 import { useWallet } from "@/lib/wallet-context";
 import {
   ADDRESSES,
   VAULT_ABI,
   STRATEGY_ABI,
   STRATEGY_META,
+  MONAD_TESTNET_RPC,
 } from "@/lib/contracts";
 
 export interface Strategy {
@@ -97,8 +98,13 @@ export function VaultProvider({ children }: { children: React.ReactNode }) {
   );
 
   const refresh = useCallback(async () => {
-    const provider = getProvider();
-    if (!provider) return;
+    // Use public RPC for reads with static network and batchMaxCount=1
+    const fetchReq = new FetchRequest(MONAD_TESTNET_RPC);
+    fetchReq.setHeader("Content-Type", "application/json");
+    const provider = new JsonRpcProvider(fetchReq, {
+      chainId: 10143,
+      name: "monad-testnet",
+    }, { staticNetwork: true, batchMaxCount: 1 });
 
     try {
       const vaultContract = new Contract(ADDRESSES.vault, VAULT_ABI, provider);
