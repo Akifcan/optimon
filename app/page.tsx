@@ -6,11 +6,13 @@ import { StrategyCard } from "@/components/strategy-card";
 import { RebalanceAnimation } from "@/components/rebalance-animation";
 import { DepositModal } from "@/components/deposit-modal";
 import { TransactionHistory } from "@/components/transaction-history";
+import { AuthGuard } from "@/components/auth-guard";
 
 export default function Dashboard() {
   const { vault } = useVault();
 
   return (
+    <AuthGuard>
     <div className="mx-auto w-full max-w-5xl space-y-8 px-4 py-8">
       <div className="flex items-center justify-between">
         <div>
@@ -37,5 +39,6 @@ export default function Dashboard() {
 
       <TransactionHistory />
     </div>
+    </AuthGuard>
   );
 }

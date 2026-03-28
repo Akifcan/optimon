@@ -3,11 +3,13 @@
 import { useVault } from "@/lib/vault-context";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DepositModal } from "@/components/deposit-modal";
+import { AuthGuard } from "@/components/auth-guard";
 
 export default function DepositPage() {
   const { vault } = useVault();
 
   return (
+    <AuthGuard>
     <div className="mx-auto w-full max-w-xl space-y-8 px-4 py-8">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Deposit</h1>
@@ -42,5 +44,6 @@ export default function DepositPage() {
         <DepositModal />
       </div>
     </div>
+    </AuthGuard>
   );
 }

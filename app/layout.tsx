@@ -3,6 +3,7 @@ import { Quicksand } from "next/font/google";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { VaultProvider } from "@/lib/vault-context";
+import { WalletProvider } from "@/lib/wallet-context";
 import "./globals.css";
 
 const quicksand = Quicksand({
@@ -26,11 +27,13 @@ export default function RootLayout({
       className={`${quicksand.variable} ${quicksand.className} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <VaultProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </VaultProvider>
+        <WalletProvider>
+          <VaultProvider>
+            <Header />
+            <main className="flex-1 flex flex-col">{children}</main>
+            <Footer />
+          </VaultProvider>
+        </WalletProvider>
       </body>
     </html>
   );
