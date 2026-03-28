@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useWallet, shortenAddress } from "@/lib/wallet-context";
 
 export function Header() {
   const { address, disconnect } = useWallet();
+  const pathname = usePathname();
 
   return (
     <header className="border-b border-border bg-card">
@@ -19,13 +21,13 @@ export function Header() {
               <nav className="flex items-center gap-6">
                 <Link
                   href="/"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  className={`text-sm font-medium transition-colors hover:text-foreground ${pathname === "/" ? "text-foreground" : "text-muted-foreground"}`}
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/deposit"
-                  className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  className={`text-sm font-medium transition-colors hover:text-foreground ${pathname === "/deposit" ? "text-foreground" : "text-muted-foreground"}`}
                 >
                   Deposit
                 </Link>
