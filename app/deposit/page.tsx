@@ -10,40 +10,46 @@ export default function DepositPage() {
 
   return (
     <AuthGuard>
-    <div className="mx-auto w-full max-w-xl space-y-8 px-4 py-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Deposit</h1>
-        <p className="text-sm text-muted-foreground">
-          Add funds to the OptiMon vault
-        </p>
-      </div>
+      <div className="mx-auto w-full max-w-xl space-y-8 px-4 py-8">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Deposit</h1>
+          <p className="text-sm text-muted-foreground">
+            Add funds to the OptiMon vault
+          </p>
+        </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Current Vault Info</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Balance</span>
-            <span className="font-medium tabular-nums">
-              ${vault.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">APY</span>
-            <span className="font-medium text-green-500">{vault.apy}%</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Strategies</span>
-            <span className="font-medium">{vault.strategies.length}</span>
-          </div>
-        </CardContent>
-      </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Current Vault Info</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Total Vault</span>
+              <span className="font-medium tabular-nums">
+                {Number(vault.balance).toFixed(4)} MON
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Your Balance</span>
+              <span className="font-medium tabular-nums">
+                {Number(vault.userBalance).toFixed(4)} MON
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">APY</span>
+              <span className="font-medium text-green-500">{vault.apy}%</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Strategies</span>
+              <span className="font-medium">{vault.strategies.length}</span>
+            </div>
+          </CardContent>
+        </Card>
 
-      <div className="flex justify-center">
-        <DepositModal />
+        <div className="flex justify-center">
+          <DepositModal />
+        </div>
       </div>
-    </div>
     </AuthGuard>
   );
 }

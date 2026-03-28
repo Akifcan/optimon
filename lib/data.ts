@@ -1,28 +1,3 @@
-export interface Strategy {
-  name: string;
-  allocation: number;
-  apy: number;
-  risk: number;
-}
-
-export interface Vault {
-  balance: number;
-  apy: number;
-  riskScore: number;
-  strategies: Strategy[];
-}
-
-export const vault: Vault = {
-  balance: 10000,
-  apy: 12.5,
-  riskScore: 8.7,
-  strategies: [
-    { name: "Lending", allocation: 40, apy: 8, risk: 7 },
-    { name: "LP Pool", allocation: 30, apy: 14, risk: 9 },
-    { name: "Staking", allocation: 30, apy: 11, risk: 8 },
-  ],
-};
-
 export function getRiskColor(risk: number): string {
   if (risk <= 5) return "text-green-500";
   if (risk <= 7) return "text-yellow-500";

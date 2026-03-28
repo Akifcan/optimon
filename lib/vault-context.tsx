@@ -7,31 +7,57 @@ import {
   useEffect,
   useState,
 } from "react";
-import type { Strategy, Vault } from "@/lib/data";
+import { BrowserProvider, Contract, formatEther, parseEther } from "ethers";
+import { useWallet } from "@/lib/wallet-context";
+import {
+  ADDRESSES,
+  VAULT_ABI,
+  STRATEGY_ABI,
+  STRATEGY_META,
+} from "@/lib/contracts";
+
+export interface Strategy {
+  name: string;
+  address: string;
+  allocation: number;
+  apy: number;
+  risk: number;
+  balance: string;
+}
+
+export interface VaultData {
+  balance: string;
+  userBalance: string;
+  userShares: string;
+  apy: number;
+  riskScore: number;
+  strategies: Strategy[];
+}
 
 export interface Transaction {
   id: string;
-  type: "deposit" | "rebalance";
-  amount?: number;
+  type: "deposit" | "withdraw" | "rebalance";
+  amount?: string;
   description: string;
   timestamp: Date;
 }
 
 interface VaultContextValue {
-  vault: Vault;
+  vault: VaultData;
   transactions: Transaction[];
-  deposit: (amount: number) => void;
+  isLoading: boolean;
+  deposit: (amount: string) => Promise<void>;
+  withdraw: () => Promise<void>;
+  refresh: () => Promise<void>;
 }
 
-const INITIAL_VAULT: Vault = {
-  balance: 10000,
-  apy: 12.5,
-  riskScore: 8.7,
-  strategies: [
-    { name: "Lending", allocation: 40, apy: 8, risk: 7 },
-    { name: "LP Pool", allocation: 30, apy: 14, risk: 9 },
-    { name: "Staking", allocation: 30, apy: 11, risk: 8 },
-  ],
+const EMPTY_VAULT: VaultData = {
+  balance: "0",
+  userBalance: "0",
+  userShares: "0",
+  apy: 0,
+  riskScore: 0,
+  strategies: [],
 };
 
 const VaultContext = createContext<VaultContextValue | null>(null);
@@ -42,127 +68,176 @@ export function useVault() {
   return ctx;
 }
 
-function generateId() {
-  return Math.random().toString(36).slice(2, 10);
-}
-
-// Simulate small APY fluctuations
-function jitterApy(base: number): number {
-  const delta = (Math.random() - 0.5) * 1.5;
-  return Math.round((base + delta) * 10) / 10;
-}
-
-// Simulate rebalance: shift allocations slightly, recalc vault-level stats
-function simulateRebalance(vault: Vault): {
-  vault: Vault;
-  description: string;
-} {
-  const strategies = vault.strategies.map((s) => ({
-    ...s,
-    apy: jitterApy(s.apy),
-  }));
-
-  // Shift allocations randomly by ±3, keep sum at 100
-  const shifts = strategies.map(() => Math.round((Math.random() - 0.5) * 6));
-  const shiftSum = shifts.reduce((a, b) => a + b, 0);
-  shifts[0] -= shiftSum;
-
-  const newStrategies: Strategy[] = strategies.map((s, i) => ({
-    ...s,
-    allocation: Math.max(10, Math.min(60, s.allocation + shifts[i])),
-  }));
-
-  // Normalize to 100
-  const total = newStrategies.reduce((a, s) => a + s.allocation, 0);
-  const diff = 100 - total;
-  newStrategies[0].allocation += diff;
-
-  // Weighted APY
-  const weightedApy =
-    newStrategies.reduce((sum, s) => sum + s.apy * s.allocation, 0) / 100;
-
-  // Weighted risk
-  const weightedRisk =
-    newStrategies.reduce((sum, s) => sum + s.risk * s.allocation, 0) / 100;
-
-  // Find the biggest move for description
-  const biggestMove = shifts
-    .map((s, i) => ({ name: strategies[i].name, shift: s }))
-    .sort((a, b) => Math.abs(b.shift) - Math.abs(a.shift))[0];
-
-  const direction = biggestMove.shift > 0 ? "increased" : "decreased";
-  const description = `Rebalanced: ${biggestMove.name} ${direction} by ${Math.abs(biggestMove.shift)}%`;
-
-  return {
-    vault: {
-      ...vault,
-      apy: Math.round(weightedApy * 10) / 10,
-      riskScore: Math.round(weightedRisk * 10) / 10,
-      strategies: newStrategies,
-    },
-    description,
-  };
+function getProvider(): BrowserProvider | null {
+  const ethereum = (window as unknown as { ethereum?: object }).ethereum;
+  if (!ethereum) return null;
+  return new BrowserProvider(ethereum as never);
 }
 
 export function VaultProvider({ children }: { children: React.ReactNode }) {
-  const [vault, setVault] = useState<Vault>(INITIAL_VAULT);
+  const { address } = useWallet();
+  const [vault, setVault] = useState<VaultData>(EMPTY_VAULT);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const deposit = useCallback((amount: number) => {
-    setVault((prev) => ({
-      ...prev,
-      balance: Math.round((prev.balance + amount) * 100) / 100,
-    }));
-    setTransactions((prev) => [
-      {
-        id: generateId(),
-        type: "deposit",
-        amount,
-        description: `Deposited $${amount.toLocaleString()}`,
-        timestamp: new Date(),
-      },
-      ...prev,
-    ]);
-  }, []);
+  const addTransaction = useCallback(
+    (type: Transaction["type"], description: string, amount?: string) => {
+      setTransactions((prev) => [
+        {
+          id: Math.random().toString(36).slice(2, 10),
+          type,
+          amount,
+          description,
+          timestamp: new Date(),
+        },
+        ...prev.slice(0, 19),
+      ]);
+    },
+    []
+  );
 
-  // Simulate yield accrual every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setVault((prev) => {
-        // Daily yield = balance * (apy/100) / 365, but we compress time
-        const dailyYield = prev.balance * (prev.apy / 100) / 365;
-        // Each tick ~= 1 simulated day
-        return {
-          ...prev,
-          balance: Math.round((prev.balance + dailyYield) * 100) / 100,
-        };
-      });
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  const refresh = useCallback(async () => {
+    const provider = getProvider();
+    if (!provider) return;
 
-  // Simulate rebalance every 15 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setVault((prev) => {
-        const result = simulateRebalance(prev);
-        setTransactions((txns) => [
-          {
-            id: generateId(),
-            type: "rebalance",
-            description: result.description,
-            timestamp: new Date(),
-          },
-          ...txns.slice(0, 19), // keep last 20
+    try {
+      const vaultContract = new Contract(ADDRESSES.vault, VAULT_ABI, provider);
+
+      const [totalVal, stratCount] = await Promise.all([
+        vaultContract.totalValue(),
+        vaultContract.strategyCount(),
+      ]);
+
+      let userVal = BigInt(0);
+      let userSharesVal = BigInt(0);
+      if (address) {
+        [userVal, userSharesVal] = await Promise.all([
+          vaultContract.userValue(address),
+          vaultContract.shares(address),
         ]);
-        return result.vault;
+      }
+
+      const count = Number(stratCount);
+      const strategies: Strategy[] = [];
+      let totalWeightedApy = 0;
+      let totalWeightedRisk = 0;
+
+      for (let i = 0; i < count; i++) {
+        const [stratAddr, weight] = await vaultContract.strategies(i);
+        const stratContract = new Contract(
+          stratAddr as string,
+          STRATEGY_ABI,
+          provider
+        );
+
+        const [apyBps, risk, balance] = await Promise.all([
+          stratContract.apyBps(),
+          stratContract.riskScore(),
+          stratContract.totalBalance(),
+        ]);
+
+        const meta = STRATEGY_META.find(
+          (s) => s.address.toLowerCase() === (stratAddr as string).toLowerCase()
+        );
+        const allocation = Number(weight) / 100;
+        const apyNum = Number(apyBps) / 100;
+        const riskNum = Number(risk);
+
+        strategies.push({
+          name: meta?.name ?? `Strategy ${i}`,
+          address: stratAddr as string,
+          allocation,
+          apy: apyNum,
+          risk: riskNum,
+          balance: formatEther(balance),
+        });
+
+        totalWeightedApy += apyNum * allocation;
+        totalWeightedRisk += riskNum * allocation;
+      }
+
+      const totalAllocation = strategies.reduce(
+        (sum, s) => sum + s.allocation,
+        0
+      );
+
+      setVault({
+        balance: formatEther(totalVal),
+        userBalance: formatEther(userVal),
+        userShares: formatEther(userSharesVal),
+        apy:
+          totalAllocation > 0
+            ? Math.round((totalWeightedApy / totalAllocation) * 10) / 10
+            : 0,
+        riskScore:
+          totalAllocation > 0
+            ? Math.round((totalWeightedRisk / totalAllocation) * 10) / 10
+            : 0,
+        strategies,
       });
-    }, 15000);
+    } catch (err) {
+      console.error("Failed to read vault:", err);
+    }
+  }, [address]);
+
+  const deposit = useCallback(
+    async (amount: string) => {
+      const provider = getProvider();
+      if (!provider) return;
+
+      setIsLoading(true);
+      try {
+        const signer = await provider.getSigner();
+        const vaultContract = new Contract(
+          ADDRESSES.vault,
+          VAULT_ABI,
+          signer
+        );
+        const tx = await vaultContract.deposit({ value: parseEther(amount) });
+        await tx.wait();
+        addTransaction("deposit", `Deposited ${amount} MON`, amount);
+        await refresh();
+      } catch (err) {
+        console.error("Deposit failed:", err);
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [addTransaction, refresh]
+  );
+
+  const withdraw = useCallback(async () => {
+    const provider = getProvider();
+    if (!provider) return;
+
+    setIsLoading(true);
+    try {
+      const signer = await provider.getSigner();
+      const vaultContract = new Contract(ADDRESSES.vault, VAULT_ABI, signer);
+      const tx = await vaultContract.withdraw();
+      await tx.wait();
+      addTransaction("withdraw", `Withdrawn all funds`);
+      await refresh();
+    } catch (err) {
+      console.error("Withdraw failed:", err);
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [addTransaction, refresh]);
+
+  // Refresh on mount and when address changes
+  useEffect(() => {
+    refresh();
+    const interval = setInterval(refresh, 15000);
     return () => clearInterval(interval);
-  }, []);
+  }, [refresh]);
 
   return (
-    <VaultContext.Provider value={{ vault, transactions, deposit }}>
+    <VaultContext.Provider
+      value={{ vault, transactions, isLoading, deposit, withdraw, refresh }}
+    >
       {children}
     </VaultContext.Provider>
   );

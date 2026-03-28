@@ -6,6 +6,10 @@ import { useVault } from "@/lib/vault-context";
 export function RebalanceAnimation() {
   const { vault } = useVault();
 
+  if (vault.strategies.length === 0) {
+    return null;
+  }
+
   return (
     <div className="space-y-3">
       <h3 className="text-sm font-medium">Allocation Distribution</h3>

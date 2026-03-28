@@ -13,11 +13,17 @@ export function VaultCard() {
         <CardTitle className="text-lg">Vault Overview</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
           <div>
-            <p className="text-sm text-muted-foreground">Balance</p>
+            <p className="text-sm text-muted-foreground">Total Vault</p>
             <p className="text-2xl font-bold tabular-nums">
-              ${vault.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {Number(vault.balance).toFixed(4)} MON
+            </p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground">Your Balance</p>
+            <p className="text-2xl font-bold tabular-nums">
+              {Number(vault.userBalance).toFixed(4)} MON
             </p>
           </div>
           <div>

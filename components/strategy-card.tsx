@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRiskColor, getRiskBgColor, getRiskLabel } from "@/lib/data";
-import type { Strategy } from "@/lib/data";
+import type { Strategy } from "@/lib/vault-context";
 
 export function StrategyCard({ strategy }: { strategy: Strategy }) {
   return (
@@ -27,6 +27,12 @@ export function StrategyCard({ strategy }: { strategy: Strategy }) {
           <span className="text-muted-foreground">Risk</span>
           <span className={`font-medium ${getRiskColor(strategy.risk)}`}>
             {strategy.risk}/10 ({getRiskLabel(strategy.risk)})
+          </span>
+        </div>
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">Balance</span>
+          <span className="font-medium tabular-nums">
+            {Number(strategy.balance).toFixed(4)} MON
           </span>
         </div>
       </CardContent>
